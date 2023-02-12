@@ -8,8 +8,14 @@ const scrapeData = async (targetUrl, targetElement) => {
 
         await page.goto(targetUrl);
 
-        const items = await page.$$eval(targetElement, items => {
+        /* const items = await page.$$eval(targetElement, items => {
             return items.map(item => item.firstChild.textContent);
+        }); */
+
+        const items = await page.evaluate(() => {
+            const nodeList  = document.querySelectorAll(".p-1.m-1");
+
+            return Array.from(nodeList).map(item => item.firstChild.textContent);
         });
 
         fs.writeFile("scraped-data.json", JSON.stringify(items, null, 4), (error) => {
@@ -30,4 +36,4 @@ const scrapeData = async (targetUrl, targetElement) => {
     }
 };
 
-scrapeData("https://word.tips/unscramble/asdfjkl/", ".p-1.m-1");
+scrapeData("https://word.tips/unscramble/asdfjklqwer/", ".p-1.m-1");
