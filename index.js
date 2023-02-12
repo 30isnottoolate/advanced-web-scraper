@@ -13,8 +13,8 @@ const scrapeData = async (targetUrl, targetElement) => {
         }); */
 
         await page.waitForSelector(targetElement, {timeout: 5000})
-            .then(() => console.log("Target available"))
-            .catch(error => console.error(error));
+            .then(() => console.log("Target(s) found"))
+            .catch(() => console.log("Target(s) not found"));
 
         const items = await page.evaluate((targetElement) => {
             const nodeList = document.querySelectorAll(targetElement);
@@ -22,17 +22,21 @@ const scrapeData = async (targetUrl, targetElement) => {
             return Array.from(nodeList).map(item => item.firstChild.textContent);
         }, targetElement);
 
-        fs.writeFile("scraped-data.json", JSON.stringify(items, null, 4), (error) => {
-            if (error) {
-                console.error(error);
-                return;
-            }
+        items.length > 0 && console.log(`Number of targets: ${items.length}`);
 
-            console.log("Data scraped");
-        });
-
+        if (items.length > 0) {
+            fs.writeFile("scraped-data.json", JSON.stringify(items, null, 4), (error) => {
+                if (error) {
+                    console.error(error);
+                    return;
+                }
+    
+                console.log("Data scraping successful");
+            });
+            
+        } else console.log("Data scraping failed")
+        
         browser.close();
-
     }
 
     catch (error) {
@@ -40,4 +44,4 @@ const scrapeData = async (targetUrl, targetElement) => {
     }
 };
 
-scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-2.m-1");
+scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-1.m-1");
