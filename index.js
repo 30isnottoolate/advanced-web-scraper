@@ -8,10 +8,6 @@ const scrapeData = async (targetUrl, targetElement) => {
 
         await page.goto(targetUrl);
 
-        /* const items = await page.$$eval(targetElement, items => {
-            return items.map(item => item.firstChild.textContent);
-        }); */
-
         await page.waitForSelector(targetElement, {timeout: 5000})
             .then(() => console.log("Target(s) found"))
             .catch(() => console.log("Target(s) not found"));
@@ -33,7 +29,7 @@ const scrapeData = async (targetUrl, targetElement) => {
     
                 console.log("Data scraping successful");
             });
-            
+
         } else console.log("Data scraping failed")
         
         browser.close();
