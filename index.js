@@ -1,7 +1,21 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
 
-const scrapeData = async (targetUrl, targetElement) => {
+const urls = [
+    "https://word.tips/unscramble/asdfjkl/",
+    "https://word.tips/unscramble/asdfjklru/",
+    "https://word.tips/unscramble/asdfjklruei/",
+    "https://word.tips/unscramble/asdfjklrueiwo/",
+    "https://word.tips/unscramble/asdfjklrueiwoqp/",
+    "https://word.tips/unscramble/asdfjkleigh/",
+    "https://word.tips/unscramble/asdfjkleighty/",
+    "https://word.tips/unscramble/asdfjkleightyvm/",
+    "https://word.tips/unscramble/asdfjkleivmbn/",
+    "https://word.tips/unscramble/asdfjkleivmbnc/",
+    "https://word.tips/unscramble/asdfjkleivmczx/",
+];
+
+const scrapeData = async (targetUrl, targetElement, outputFile) => {
     try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
@@ -21,7 +35,7 @@ const scrapeData = async (targetUrl, targetElement) => {
         items.length > 0 && console.log(`Number of targets: ${items.length}`);
 
         if (items.length > 0) {
-            fs.writeFile("scraped-data.json", JSON.stringify(items, null, 4), (error) => {
+            fs.writeFile(outputFile, JSON.stringify(items, null, 4), (error) => {
                 if (error) {
                     console.error(error);
                     return;
@@ -40,4 +54,6 @@ const scrapeData = async (targetUrl, targetElement) => {
     }
 };
 
-scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-1.m-1");
+urls.forEach((item, index) => {
+    scrapeData(item, "span.p-1.m-1", `data/scraped-data-${index}.json`);
+});
