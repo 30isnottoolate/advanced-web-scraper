@@ -7,8 +7,7 @@ const scrapeData = async () => {
 
     await page.goto("https://word.tips/unscramble/asdfjkl/");
 
-    const items = await page.$$eval(".p-1.m-1", items => { //td.table__cell--first
-        console.log(items.length);
+    const items = await page.$$eval(".p-1.m-1", items => {
         return items.map(item => item.firstChild.textContent);
     });
 
