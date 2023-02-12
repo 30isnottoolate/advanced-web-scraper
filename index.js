@@ -1,14 +1,14 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
 
-const scrapeData = async () => {
+const scrapeData = async (targetUrl, targetElement) => {
     try {
         const browser = await puppeteer.launch();
         const page = await browser.newPage();
 
-        await page.goto("https://word.tips/unscramble/asdfjkl/");
+        await page.goto(targetUrl);
 
-        const items = await page.$$eval(".p-1.m-1", items => {
+        const items = await page.$$eval(targetElement, items => {
             return items.map(item => item.firstChild.textContent);
         });
 
@@ -24,10 +24,10 @@ const scrapeData = async () => {
         browser.close();
 
     } 
-    
+
     catch (error) {
         console.error(error);
     }
 };
 
-scrapeData();
+scrapeData("https://word.tips/unscramble/asdfjkl/", ".p-1.m-1");
