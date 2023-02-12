@@ -30,7 +30,7 @@ const scrapeData = async (targetUrl, targetElement) => {
                 console.log("Data scraping successful");
             });
 
-        } else console.log("Data scraping failed")
+        } else console.log("Data scraping failed");
         
         browser.close();
     }
