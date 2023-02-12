@@ -12,7 +12,7 @@ const scrapeData = async (targetUrl, targetElement) => {
             return items.map(item => item.firstChild.textContent);
         }); */
 
-        await page.waitForSelector(targetElement)
+        await page.waitForSelector(targetElement, {timeout: 5000})
             .then(() => console.log("Target available"))
             .catch(error => console.error(error));
 
