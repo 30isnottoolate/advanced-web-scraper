@@ -12,7 +12,9 @@ const scrapeData = async (targetUrl, targetElement) => {
             return items.map(item => item.firstChild.textContent);
         }); */
 
-        await page.waitForSelector(targetElement);
+        await page.waitForSelector(targetElement)
+            .then(() => console.log("Target available"))
+            .catch(error => console.error(error));
 
         const items = await page.evaluate((targetElement) => {
             const nodeList = document.querySelectorAll(targetElement);
@@ -31,11 +33,11 @@ const scrapeData = async (targetUrl, targetElement) => {
 
         browser.close();
 
-    } 
+    }
 
     catch (error) {
         console.error(error);
     }
 };
 
-scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-1.m-1");
+scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-2.m-1");
