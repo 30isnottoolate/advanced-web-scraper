@@ -12,11 +12,13 @@ const scrapeData = async (targetUrl, targetElement) => {
             return items.map(item => item.firstChild.textContent);
         }); */
 
-        const items = await page.evaluate(() => {
-            const nodeList  = document.querySelectorAll(".p-1.m-1");
+        await page.waitForSelector(targetElement);
+
+        const items = await page.evaluate((targetElement) => {
+            const nodeList = document.querySelectorAll(targetElement);
 
             return Array.from(nodeList).map(item => item.firstChild.textContent);
-        });
+        }, targetElement);
 
         fs.writeFile("scraped-data.json", JSON.stringify(items, null, 4), (error) => {
             if (error) {
@@ -36,4 +38,4 @@ const scrapeData = async (targetUrl, targetElement) => {
     }
 };
 
-scrapeData("https://word.tips/unscramble/asdfjklqwer/", ".p-1.m-1");
+scrapeData("https://word.tips/unscramble/asdfjkl/", "span.p-1.m-1");
